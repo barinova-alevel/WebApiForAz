@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "SFMB.WebApi": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://sfmbwebapi-dfb4hkgjeeh7cnbt.polandcentral-01.azurewebsites.net"
+    }
+  }
+}

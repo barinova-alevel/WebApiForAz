@@ -1,0 +1,44 @@
+[
+  {
+    "OperationTypeId": 1,
+    "Name": "Salary",
+    "Description": "Monthly job income",
+    "IsIncome": true
+  },
+  {
+    "OperationTypeId": 2,
+    "Name": "Freelance",
+    "Description": "Freelance or side project payments",
+    "IsIncome": true
+  },
+  {
+    "OperationTypeId": 3,
+    "Name": "Groceries",
+    "Description": "Daily food and household shopping",
+    "IsIncome": false
+  },
+  {
+    "OperationTypeId": 4,
+    "Name": "Utilities",
+    "Description": "Electricity, water, gas, etc.",
+    "IsIncome": false
+  },
+  {
+    "OperationTypeId": 5,
+    "Name": "Entertainment",
+    "Description": "Movies, games, subscriptions",
+    "IsIncome": false
+  },
+  {
+    "OperationTypeId": 6,
+    "Name": "Investment Return",
+    "Description": "Dividends or capital gains",
+    "IsIncome": true
+  },
+  {
+    "OperationTypeId": 7,
+    "Name": "Rent",
+    "Description": "Monthly house or apartment rent",
+    "IsIncome": false
+  }
+]
