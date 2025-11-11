@@ -20,7 +20,7 @@ builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("WebApiDefaultConnection");
 
 builder.Services.AddDbContext<SfmbDbContext>(options =>
-options.UseSqlServer(connectionString));
+options.UseNpgsql(connectionString));
 
 Console.WriteLine($"[DEBUG] Connection String program: {connectionString}");
 

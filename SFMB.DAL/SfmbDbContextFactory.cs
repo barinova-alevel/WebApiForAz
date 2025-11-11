@@ -16,7 +16,7 @@ namespace SFMB.DAL
             var optionsBuilder = new DbContextOptionsBuilder<SfmbDbContext>();
             var connectionString = configuration.GetConnectionString("WebApiDefaultConnection");
 
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseNpgsql(connectionString);
 
             return new SfmbDbContext(optionsBuilder.Options, configuration);
         }

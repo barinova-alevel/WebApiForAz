@@ -21,6 +21,7 @@ namespace SFMB.DAL.Repositories
             var operations = await _context.Operations
                 .Include(o => o.OperationType)
                 .Where(o => o.Date >= start && o.Date < end)
+                .OrderByDescending(o => o.Date)
                 .ToListAsync();
 
             var report = new DailyReport
