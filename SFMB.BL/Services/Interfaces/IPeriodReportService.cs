@@ -4,6 +4,6 @@ namespace SFMB.BL.Services.Interfaces
 {
     public interface IPeriodReportService
     {
-        Task<PeriodReportDto> GetPeriodReportAsync(DateTime startDate, DateTime endDate);
+        Task<PeriodReportDto> GetPeriodReportAsync(DateOnly startDate, DateOnly endDate);
     }
 }

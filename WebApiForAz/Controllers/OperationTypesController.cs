@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
 using SFMB.BL.Dtos;
 using SFMB.DAL.Entities;
 using OperationType = SFMB.DAL.Entities.OperationType;

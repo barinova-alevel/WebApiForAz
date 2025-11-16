@@ -13,7 +13,7 @@ namespace SFMB.BL.Services
             _dailyReportRepository = dailyReportRepository;
         }
 
-        public async Task<DailyReportDto> GetDailyReportAsync(DateTime date)
+        public async Task<DailyReportDto> GetDailyReportAsync(DateOnly date)
         {
             var report = await _dailyReportRepository.GetDailyReportAsync(date);
             var helper = new DtoMapper();

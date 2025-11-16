@@ -15,7 +15,7 @@ namespace SFMB.BL.Services
             _periodReportRepository = periodReportRepository;
         }
 
-        public async Task<PeriodReportDto> GetPeriodReportAsync(DateTime startDate, DateTime endDate)
+        public async Task<PeriodReportDto> GetPeriodReportAsync(DateOnly startDate, DateOnly endDate)
         {
             var report = await _periodReportRepository.GetPeriodReportAsync(startDate, endDate);
             var helper = new DtoMapper();

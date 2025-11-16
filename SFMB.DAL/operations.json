@@ -1,140 +1,140 @@
 [
   {
     "OperationId": 1,
-    "Date": "2025-05-01T00:00:00Z",
+    "Date": "2025-05-01",
     "Amount": 40000,
     "Note": "Monthly job income",
     "OperationTypeId": 1
   },
   {
     "OperationId": 2,
-    "Date": "2025-05-01T00:00:00Z",
+    "Date": "2025-05-01",
     "Amount": 220.50,
     "Note": "food",
     "OperationTypeId": 3
   },
   {
     "OperationId": 3,
-    "Date": "2025-05-02T00:00:00Z",
+    "Date": "2025-05-02",
     "Amount": 554.70,
     "Note": "electricity, water",
     "OperationTypeId": 4
   },
   {
     "OperationId": 4,
-    "Date": "2025-05-02T00:00:00Z",
+    "Date": "2025-05-02",
     "Amount": 358,
     "Note": "netflix",
     "OperationTypeId": 5
   },
   {
     "OperationId": 5,
-    "Date": "2025-05-02T00:00:00Z",
+    "Date": "2025-05-02",
     "Amount": 16350,
     "Note": "apartment rent",
     "OperationTypeId": 7
   },
   {
     "OperationId": 6,
-    "Date": "2025-05-03T00:00:00Z",
+    "Date": "2025-05-03",
     "Amount": 1020.80,
     "Note": "market",
     "OperationTypeId": 3
   },
   {
     "OperationId": 7,
-    "Date": "2025-05-03T00:00:00Z",
+    "Date": "2025-05-03",
     "Amount": 4000,
     "Note": "consulting",
     "OperationTypeId": 2
   },
   {
     "OperationId": 8,
-    "Date": "2025-05-04T00:00:00Z",
+    "Date": "2025-05-04",
     "Amount": 820,
     "Note": "",
     "OperationTypeId": 5
   },
   {
     "OperationId": 9,
-    "Date": "2025-05-05T00:00:00Z",
+    "Date": "2025-05-05",
     "Amount": 325,
     "Note": "pizza",
     "OperationTypeId": 3
   },
   {
     "OperationId": 10,
-    "Date": "2025-05-05T00:00:00Z",
+    "Date": "2025-05-05",
     "Amount": 120,
     "Note": "deposit percentage",
     "OperationTypeId": 6
   },
   {
     "OperationId": 11,
-    "Date": "2025-05-06T00:00:00Z",
+    "Date": "2025-05-06",
     "Amount": 780,
     "Note": "food delivery",
     "OperationTypeId": 3
   },
   {
     "OperationId": 12,
-    "Date": "2025-05-06T00:00:00Z",
+    "Date": "2025-05-06",
     "Amount": 535,
     "Note": "lunch",
     "OperationTypeId": 3
   },
   {
     "OperationId": 13,
-    "Date": "2025-05-08T00:00:00Z",
+    "Date": "2025-05-08",
     "Amount": 370,
     "Note": "market",
     "OperationTypeId": 3
   },
   {
     "OperationId": 14,
-    "Date": "2025-05-08T00:00:00Z",
+    "Date": "2025-05-08",
     "Amount": 400,
     "Note": "bike rent",
     "OperationTypeId": 5
   },
   {
     "OperationId": 15,
-    "Date": "2025-05-09T00:00:00Z",
+    "Date": "2025-05-09",
     "Amount": 520,
     "Note": "street food",
     "OperationTypeId": 3
   },
   {
     "OperationId": 16,
-    "Date": "2025-05-10T00:00:00Z",
+    "Date": "2025-05-10",
     "Amount": 250.72,
     "Note": "gas",
     "OperationTypeId": 4
   },
   {
     "OperationId": 17,
-    "Date": "2025-05-10T00:00:00Z",
+    "Date": "2025-05-10",
     "Amount": 10,
     "Note": "matches",
     "OperationTypeId": 3
   },
   {
     "OperationId": 18,
-    "Date": "2025-05-10T00:00:00Z",
+    "Date": "2025-05-10",
     "Amount": 100,
     "Note": "market",
     "OperationTypeId": 3
   },
   {
     "OperationId": 19,
-    "Date": "2025-05-10T00:00:00Z",
+    "Date": "2025-05-10",
     "Amount": 155,
     "Note": "youtube subscription",
     "OperationTypeId": 5
   },
   {
     "OperationId": 20,
-    "Date": "2025-05-10T00:00:00Z",
+    "Date": "2025-05-10",
     "Amount": 2500,
     "Note": "bonus",
     "OperationTypeId": 1

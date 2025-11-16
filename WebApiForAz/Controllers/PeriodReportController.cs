@@ -17,8 +17,8 @@ namespace WebApiForAz.Controllers
 
         [HttpGet("report/period")]
         public async Task<ActionResult<PeriodReportDto>> GetPeriodReport(
-            [FromQuery] DateTime startDate,
-            [FromQuery] DateTime endDate)
+            [FromQuery] DateOnly startDate,
+            [FromQuery] DateOnly endDate)
         {
             if (startDate > endDate)
             {

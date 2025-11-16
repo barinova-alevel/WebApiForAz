@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SFMB.DAL.Entities;
 using SFMB.DAL.Repositories.Interfaces;
 
@@ -18,10 +13,10 @@ namespace SFMB.DAL.Repositories
             _context = context;
         }
 
-        public async Task<PeriodReport> GetPeriodReportAsync(DateTime startDate, DateTime endDate)
+        public async Task<PeriodReport> GetPeriodReportAsync(DateOnly startDate, DateOnly endDate)
         {
-            var start = startDate.Date;
-            var end = endDate.Date.AddDays(1);
+            var start = startDate;
+            var end = endDate.AddDays(1);
 
             var operations = await _context.Operations
                 .Include(o => o.OperationType)

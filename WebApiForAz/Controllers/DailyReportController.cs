@@ -17,7 +17,7 @@ namespace WebApiForAz.Controllers
         }
 
         [HttpGet("report/daily")]
-        public async Task<ActionResult<DailyReportDto>> GetDailyReport([FromQuery] DateTime date)
+        public async Task<ActionResult<DailyReportDto>> GetDailyReport([FromQuery] DateOnly date)
         {
             var report = await _dailyReportService.GetDailyReportAsync(date);
             return Ok(report);

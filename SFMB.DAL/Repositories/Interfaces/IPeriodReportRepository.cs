@@ -4,6 +4,6 @@ namespace SFMB.DAL.Repositories.Interfaces
 {
     public interface IPeriodReportRepository
     {
-        Task<PeriodReport> GetPeriodReportAsync(DateTime startDate, DateTime endDate);
+        Task<PeriodReport> GetPeriodReportAsync(DateOnly startDate, DateOnly endDate);
     }
 }

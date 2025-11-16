@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SFMB.DAL;
@@ -11,9 +12,11 @@ using SFMB.DAL;
 namespace SFMB.DAL.Migrations
 {
     [DbContext(typeof(SfmbDbContext))]
-    partial class SfmbDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251115095549_AddRecords")]
+    partial class AddRecords
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,8 +36,8 @@ namespace SFMB.DAL.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Note")
                         .HasColumnType("text");
@@ -53,7 +56,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 1,
                             Amount = 40000m,
-                            Date = new DateOnly(2025, 5, 1),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "Monthly job income",
                             OperationTypeId = 1
                         },
@@ -61,7 +64,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 2,
                             Amount = 220.50m,
-                            Date = new DateOnly(2025, 5, 1),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "food",
                             OperationTypeId = 3
                         },
@@ -69,7 +72,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 3,
                             Amount = 554.70m,
-                            Date = new DateOnly(2025, 5, 2),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "electricity, water",
                             OperationTypeId = 4
                         },
@@ -77,7 +80,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 4,
                             Amount = 358m,
-                            Date = new DateOnly(2025, 5, 2),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "netflix",
                             OperationTypeId = 5
                         },
@@ -85,7 +88,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 5,
                             Amount = 16350m,
-                            Date = new DateOnly(2025, 5, 2),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "apartment rent",
                             OperationTypeId = 7
                         },
@@ -93,7 +96,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 6,
                             Amount = 1020.80m,
-                            Date = new DateOnly(2025, 5, 3),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "market",
                             OperationTypeId = 3
                         },
@@ -101,7 +104,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 7,
                             Amount = 4000m,
-                            Date = new DateOnly(2025, 5, 3),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "consulting",
                             OperationTypeId = 2
                         },
@@ -109,7 +112,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 8,
                             Amount = 820m,
-                            Date = new DateOnly(2025, 5, 4),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "",
                             OperationTypeId = 5
                         },
@@ -117,7 +120,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 9,
                             Amount = 325m,
-                            Date = new DateOnly(2025, 5, 5),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "pizza",
                             OperationTypeId = 3
                         },
@@ -125,7 +128,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 10,
                             Amount = 120m,
-                            Date = new DateOnly(2025, 5, 5),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "deposit percentage",
                             OperationTypeId = 6
                         },
@@ -133,7 +136,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 11,
                             Amount = 780m,
-                            Date = new DateOnly(2025, 5, 6),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "food delivery",
                             OperationTypeId = 3
                         },
@@ -141,7 +144,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 12,
                             Amount = 535m,
-                            Date = new DateOnly(2025, 5, 6),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "lunch",
                             OperationTypeId = 3
                         },
@@ -149,7 +152,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 13,
                             Amount = 370m,
-                            Date = new DateOnly(2025, 5, 8),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "market",
                             OperationTypeId = 3
                         },
@@ -157,7 +160,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 14,
                             Amount = 400m,
-                            Date = new DateOnly(2025, 5, 8),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "bike rent",
                             OperationTypeId = 5
                         },
@@ -165,7 +168,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 15,
                             Amount = 520m,
-                            Date = new DateOnly(2025, 5, 9),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "street food",
                             OperationTypeId = 3
                         },
@@ -173,7 +176,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 16,
                             Amount = 250.72m,
-                            Date = new DateOnly(2025, 5, 10),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "gas",
                             OperationTypeId = 4
                         },
@@ -181,7 +184,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 17,
                             Amount = 10m,
-                            Date = new DateOnly(2025, 5, 10),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "matches",
                             OperationTypeId = 3
                         },
@@ -189,7 +192,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 18,
                             Amount = 100m,
-                            Date = new DateOnly(2025, 5, 10),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "market",
                             OperationTypeId = 3
                         },
@@ -197,7 +200,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 19,
                             Amount = 155m,
-                            Date = new DateOnly(2025, 5, 10),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "youtube subscription",
                             OperationTypeId = 5
                         },
@@ -205,7 +208,7 @@ namespace SFMB.DAL.Migrations
                         {
                             OperationId = 20,
                             Amount = 2500m,
-                            Date = new DateOnly(2025, 5, 10),
+                            Date = new DateTimeOffset(new DateTime(2025, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Note = "bonus",
                             OperationTypeId = 1
                         });

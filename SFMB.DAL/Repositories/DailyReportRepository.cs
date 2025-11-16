@@ -13,9 +13,12 @@ namespace SFMB.DAL.Repositories
             _context = context;
         }
 
-        public async Task<DailyReport> GetDailyReportAsync(DateTime date)
+        public async Task<DailyReport> GetDailyReportAsync(DateOnly date)
         {
-            var start = date.Date;
+
+            DateTime now = DateTime.Now;
+
+            var start = date;
             var end = start.AddDays(1);
 
             var operations = await _context.Operations
