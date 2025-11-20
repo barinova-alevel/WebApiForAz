@@ -49,10 +49,4 @@
     <ProjectReference Include="..\SFMB.DAL\SFMB.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
 </Project>

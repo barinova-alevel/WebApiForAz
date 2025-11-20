@@ -7,9 +7,9 @@ using SFMB.DAL.Repositories;
 using SFMB.DAL.Repositories.Interfaces;
 using WebApiForAz.Middleware;
 
-
 IConfigurationRoot configurationBuilder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables("DefaultConnection")
+                //.AddJsonFile("appsettings.json")
                 .Build();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,18 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-var connectionString = builder.Configuration.GetConnectionString("WebApiDefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<SfmbDbContext>(options =>
 options.UseNpgsql(connectionString));
-
-Console.WriteLine($"[DEBUG] Connection String program: {connectionString}");
 
 builder.Services.AddScoped<IOperationTypeRepository, OperationTypeRepository>();
 builder.Services.AddScoped<IOperationRepository, OperationRepository>();
 builder.Services.AddScoped<IDailyReportRepository, DailyReportRepository>();
 builder.Services.AddScoped<IPeriodReportRepository, PeriodReportRepository>();
-
 builder.Services.AddScoped<IOperationService, OperationService>();
 builder.Services.AddScoped<IOperationTypeService, OperationTypeService>();
 builder.Services.AddScoped<IDailyReportService, DailyReportService>();
