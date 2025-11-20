@@ -37,6 +37,7 @@ namespace SFMB.DAL.Repositories
         {
             return await _context.Operations
                 .Include(o => o.OperationType)
+                .OrderByDescending(o => o.Date)
                 .ToListAsync();
         }
 
