@@ -20,7 +20,7 @@ namespace SFMB.DAL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var connectionString = _configuration.GetConnectionString("WebApiDefaultConnection");
+                var connectionString = _configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseNpgsql(connectionString);
             }
         }
