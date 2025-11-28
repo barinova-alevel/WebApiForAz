@@ -7,17 +7,21 @@ using SFMB.DAL.Repositories;
 using SFMB.DAL.Repositories.Interfaces;
 using WebApiForAz.Middleware;
 
-IConfigurationRoot configurationBuilder = new ConfigurationBuilder()
-    .AddEnvironmentVariables("DefaultConnection")
-                //.AddJsonFile("appsettings.json")
-                .Build();
+//IConfigurationRoot configurationBuilder = new ConfigurationBuilder()
+//    .AddEnvironmentVariables("DefaultConnection")
+//                //.AddJsonFile("appsettings.json")
+//                .Build();
+
+//var builder = WebApplication.CreateBuilder(args);
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables(); // Load ALL environment variables
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetValue<string>("DATABASE_URL");
 
 builder.Services.AddDbContext<SfmbDbContext>(options =>
 options.UseNpgsql(connectionString));
