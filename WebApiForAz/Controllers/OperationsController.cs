@@ -138,15 +138,6 @@ namespace WebApiForAz.Controllers
 
             // Set the UserId from the current user
             var userId = GetCurrentUserId();
-            operation.UserId = userId;
-
-            var operationDto = new OperationDto
-            {
-                Date = operation.Date,
-                Amount = operation.Amount,
-                Note = operation.Note,
-                OperationTypeId = operation.OperationTypeId
-            };
             
             // Create the operation entity with UserId
             var operationEntity = new Operation

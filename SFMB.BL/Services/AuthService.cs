@@ -87,6 +87,17 @@ namespace SFMB.BL.Services
 
         private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {
+            var jwtKey = _configuration["Jwt:Key"];
+            var jwtIssuer = _configuration["Jwt:Issuer"];
+            var jwtAudience = _configuration["Jwt:Audience"];
+            var jwtExpiryHours = _configuration["Jwt:ExpiryInHours"];
+
+            if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || 
+                string.IsNullOrEmpty(jwtAudience) || string.IsNullOrEmpty(jwtExpiryHours))
+            {
+                throw new InvalidOperationException("JWT configuration is incomplete");
+            }
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -99,13 +110,13 @@ namespace SFMB.BL.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.UtcNow.AddHours(Convert.ToDouble(_configuration["Jwt:ExpiryInHours"]));
+            var expires = DateTime.UtcNow.AddHours(Convert.ToDouble(jwtExpiryHours));
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: jwtIssuer,
+                audience: jwtAudience,
                 claims: claims,
                 expires: expires,
                 signingCredentials: creds

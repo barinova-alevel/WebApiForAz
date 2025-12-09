@@ -171,7 +171,7 @@ JWT settings are configured in `appsettings.json`:
 ```json
 {
   "Jwt": {
-    "Key": "YourSuperSecretKeyForJWTTokenGenerationThatIsAtLeast32CharactersLong",
+    "Key": "REPLACE_WITH_SECURE_RANDOM_KEY_AT_LEAST_32_CHARACTERS",
     "Issuer": "SFMBApi",
     "Audience": "SFMBApi",
     "ExpiryInHours": 24
@@ -180,9 +180,12 @@ JWT settings are configured in `appsettings.json`:
 ```
 
 **Important for Production:**
-- Change the `Jwt:Key` to a secure random string
-- Store sensitive configuration in environment variables or Azure Key Vault
+- **CRITICAL**: Replace the `Jwt:Key` placeholder with a secure random string before deployment
+- The key must be at least 32 characters long
+- Use a cryptographically secure random generator to create the key
+- Store sensitive configuration in environment variables or Azure Key Vault, not in appsettings.json
 - Set appropriate token expiry times
+- Never commit production keys to version control
 
 ### Environment Variables
 
