@@ -8,5 +8,9 @@
         public string? Note { get; set; }
         public int OperationTypeId { get; set; }
         public virtual OperationType? OperationType { get; set; }
+        
+        // User ownership
+        public string UserId { get; set; } = string.Empty;
+        public virtual ApplicationUser? User { get; set; }
     }
 }

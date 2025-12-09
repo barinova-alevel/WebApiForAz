@@ -1,11 +1,12 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SFMB.DAL.Entities;
 
 namespace SFMB.DAL
 {
-    public class SfmbDbContext : DbContext
+    public class SfmbDbContext : IdentityDbContext<ApplicationUser>
     {
         private readonly IConfiguration _configuration;
         public SfmbDbContext(DbContextOptions<SfmbDbContext> options, IConfiguration configuration) : base(options)
@@ -28,10 +29,24 @@ namespace SFMB.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
             modelBuilder.Entity<OperationType>()
                 .HasMany(ot => ot.Operations)
                 .WithOne(o => o.OperationType)
                 .HasForeignKey(o => o.OperationTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure User relationships
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.Operations)
+                .WithOne(o => o.User)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(u => u.OperationTypes)
+                .WithOne(ot => ot.User)
+                .HasForeignKey(ot => ot.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             //uncomment for the init migration:
