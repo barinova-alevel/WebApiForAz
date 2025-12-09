@@ -265,4 +265,4 @@ FakesAssemblies/
 **/log/
 **/logs/
 
-# **/Properties/launchSettings.json
+# **/Properties/launchSettings.jsonappsettings.Development.json

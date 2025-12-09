@@ -1,59 +1,79 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SFMB.BL.Dtos;
 using SFMB.DAL.Entities;
 using OperationType = SFMB.DAL.Entities.OperationType;
 using SFMB.BL.Services.Interfaces;
+using SFMB.DAL.Repositories.Interfaces;
 
 namespace WebApiForAz.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OperationTypesController : ControllerBase
     {
         private readonly SFMB.BL.Services.Interfaces.IOperationTypeService _operationTypeService;
         private readonly SFMB.BL.Services.Interfaces.IOperationService _operationService;
+        private readonly IOperationTypeRepository _operationTypeRepository;
 
-        public OperationTypesController(IOperationTypeService operationTypeService, IOperationService operationService)
+        public OperationTypesController(IOperationTypeService operationTypeService, IOperationService operationService, IOperationTypeRepository operationTypeRepository)
         {
             _operationTypeService = operationTypeService;
             _operationService = operationService;
+            _operationTypeRepository = operationTypeRepository;
+        }
+
+        private string GetCurrentUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+        }
+
+        private bool IsAdmin()
+        {
+            return User.IsInRole("Admin");
         }
 
         // GET: api/OperationTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OperationType>>> GetOperationTypes()
         {
-            var operationTypeDtos = await _operationTypeService.GetAllAsync();
+            var userId = GetCurrentUserId();
+            IEnumerable<OperationType> operationTypes;
 
-            if (operationTypeDtos == null || !operationTypeDtos.Any())
+            if (IsAdmin())
+            {
+                operationTypes = await _operationTypeRepository.GetAllAsync();
+            }
+            else
+            {
+                operationTypes = await _operationTypeRepository.GetAllByUserAsync(userId);
+            }
+
+            if (operationTypes == null || !operationTypes.Any())
             {
                 return NotFound();
             }
 
-            var operationTypes = operationTypeDtos.Select(dto => new OperationType
-            {
-                OperationTypeId = dto.OperationTypeId,
-                Name = dto.Name,
-                Description = dto.Description,
-                IsIncome = dto.IsIncome,
-                Operations = dto.Operations?.Select(o => new Operation
-                {
-                    OperationId = o.OperationId,
-                    Date = o.Date,
-                    Amount = o.Amount,
-                    Note = o.Note,
-                    OperationTypeId = o.OperationTypeId
-                }).ToList() ?? new List<Operation>()
-            }).ToList();
-
-            return Ok(operationTypes);
+            return Ok(operationTypes.ToList());
         }
 
         // GET: api/OperationTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OperationType>> GetOperationType(int id)
         {
-            var operationType = await _operationTypeService.ReadAsync(id);
+            var userId = GetCurrentUserId();
+            OperationType? operationType;
+
+            if (IsAdmin())
+            {
+                operationType = await _operationTypeRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                operationType = await _operationTypeRepository.GetByIdAndUserAsync(id, userId);
+            }
 
             if (operationType == null)
             {
@@ -71,6 +91,26 @@ namespace WebApiForAz.Controllers
             {
                 return BadRequest("Operation Type Id mismatch.");
             }
+
+            var userId = GetCurrentUserId();
+            OperationType? existingOperationType;
+
+            if (IsAdmin())
+            {
+                existingOperationType = await _operationTypeRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                existingOperationType = await _operationTypeRepository.GetByIdAndUserAsync(id, userId);
+            }
+
+            if (existingOperationType == null)
+            {
+                return NotFound($"Operation Type with id {id} not found or you don't have permission.");
+            }
+
+            // Ensure UserId doesn't change
+            operationType.UserId = existingOperationType.UserId;
 
             var operationTypeDto = new OperationTypeDto
             {
@@ -94,15 +134,20 @@ namespace WebApiForAz.Controllers
         [HttpPost]
         public async Task<ActionResult<OperationType>> PostOperationType(OperationType operationType)
         {
-            var operationTypeForCreationDto = new OperationTypeDto
+            var userId = GetCurrentUserId();
+            
+            // Create entity with UserId
+            var operationTypeEntity = new OperationType
             {
                 Name = operationType.Name,
                 Description = operationType.Description,
-                IsIncome = operationType.IsIncome
+                IsIncome = operationType.IsIncome,
+                UserId = userId
             };
-            var createdOperationTypeResult = await _operationTypeService.CreateAsync(operationTypeForCreationDto);
+            
+            var createdOperationType = await _operationTypeRepository.AddAsync(operationTypeEntity);
 
-            if (createdOperationTypeResult == null)
+            if (createdOperationType == null)
             {
                 return BadRequest("Failed to create Operation Type.");
             }
@@ -111,7 +156,8 @@ namespace WebApiForAz.Controllers
             {
                 foreach (var op in operationType.Operations)
                 {
-                    op.OperationTypeId = createdOperationTypeResult.OperationTypeId;
+                    op.OperationTypeId = createdOperationType.OperationTypeId;
+                    op.UserId = userId;
 
                     var operationDto = new OperationDto
                     {
@@ -131,40 +177,35 @@ namespace WebApiForAz.Controllers
             }
 
             //Read the created OperationType
-            var fullOperationType = await _operationTypeService.ReadAsync(createdOperationTypeResult.OperationTypeId);
+            var fullOperationType = await _operationTypeRepository.GetByIdAsync(createdOperationType.OperationTypeId);
 
             if (fullOperationType == null)
             {
-                return NotFound($"Operation Type with id {createdOperationTypeResult.OperationTypeId} not found after creation.");
+                return NotFound($"Operation Type with id {createdOperationType.OperationTypeId} not found after creation.");
             }
 
             //Return the created resource
-            var responseOperationType = new OperationType
-            {
-                OperationTypeId = fullOperationType.OperationTypeId,
-                Name = fullOperationType.Name,
-                Description = fullOperationType.Description,
-                IsIncome = fullOperationType.IsIncome,
-                Operations = fullOperationType.Operations?.Select(o => new Operation
-                {
-                    OperationId = o.OperationId,
-                    Date = o.Date,
-                    Amount = o.Amount,
-                    Note = o.Note,
-                    OperationTypeId = o.OperationTypeId
-                }).ToList()
-            };
-            return CreatedAtAction("GetOperationType", new { id = responseOperationType.OperationTypeId }, responseOperationType);
+            return CreatedAtAction("GetOperationType", new { id = fullOperationType.OperationTypeId }, fullOperationType);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOperationType(int id)
         {
-            var operationType = await _operationTypeService.ReadAsync(id);
+            var userId = GetCurrentUserId();
+            OperationType? operationType;
+
+            if (IsAdmin())
+            {
+                operationType = await _operationTypeRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                operationType = await _operationTypeRepository.GetByIdAndUserAsync(id, userId);
+            }
 
             if (operationType == null)
             {
-                return NotFound($"Operation Type with id {id} not found.");
+                return NotFound($"Operation Type with id {id} not found or you don't have permission.");
             }
 
             await _operationTypeService.DeleteAsync(id);

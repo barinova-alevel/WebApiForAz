@@ -13,5 +13,9 @@ namespace SFMB.DAL.Entities
         public string? Description { get; set; }
         public bool IsIncome { get; set; }
         public virtual ICollection<Operation> Operations { get; set; } = new HashSet<Operation>();
+        
+        // User ownership
+        public string UserId { get; set; } = string.Empty;
+        public virtual ApplicationUser? User { get; set; }
     }
 }

@@ -41,11 +41,27 @@ namespace SFMB.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Operation>> GetAllByUserAsync(string userId)
+        {
+            return await _context.Operations
+                .Include(o => o.OperationType)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.Date)
+                .ToListAsync();
+        }
+
         public async Task<Operation?> GetByIdAsync(int id)
         {
             return await _context.Operations
                  .Include(o => o.OperationType)
                  .FirstOrDefaultAsync(o => o.OperationId == id);
+        }
+
+        public async Task<Operation?> GetByIdAndUserAsync(int id, string userId)
+        {
+            return await _context.Operations
+                 .Include(o => o.OperationType)
+                 .FirstOrDefaultAsync(o => o.OperationId == id && o.UserId == userId);
         }
 
         public async Task<Operation> UpdateAsync(Operation operation)
