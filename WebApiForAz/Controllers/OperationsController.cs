@@ -1,26 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SFMB.BL.Dtos;
 using SFMB.BL.Services.Interfaces;
 using SFMB.DAL.Entities;
+using SFMB.DAL.Repositories.Interfaces;
 
 namespace WebApiForAz.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OperationsController : ControllerBase
     {
         private readonly IOperationService _operationService;
+        private readonly IOperationRepository _operationRepository;
 
-        public OperationsController(IOperationService operationService)
+        public OperationsController(IOperationService operationService, IOperationRepository operationRepository)
         {
             _operationService = operationService;
+            _operationRepository = operationRepository;
+        }
+
+        private string GetCurrentUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty;
+        }
+
+        private bool IsAdmin()
+        {
+            return User.IsInRole("Admin");
         }
 
         // GET: api/Operations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Operation>>> GetAllOperations()
         {
-            var operations = await _operationService.GetAllAsync();
+            var userId = GetCurrentUserId();
+            IEnumerable<Operation> operations;
+
+            if (IsAdmin())
+            {
+                operations = await _operationRepository.GetAllAsync();
+            }
+            else
+            {
+                operations = await _operationRepository.GetAllByUserAsync(userId);
+            }
 
             if (operations == null || !operations.Any())
             {
@@ -34,11 +60,21 @@ namespace WebApiForAz.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Operation>> GetOperation(int id)
         {
-            var operation = await _operationService.GetByIdAsync(id);
+            var userId = GetCurrentUserId();
+            Operation? operation;
+
+            if (IsAdmin())
+            {
+                operation = await _operationRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                operation = await _operationRepository.GetByIdAndUserAsync(id, userId);
+            }
 
             if (operation == null)
             {
-                return BadRequest($"Operation with id {id} not found");
+                return NotFound($"Operation with id {id} not found");
             }
 
             return Ok(operation);
@@ -52,6 +88,26 @@ namespace WebApiForAz.Controllers
             {
                 return BadRequest("Operation Id mismatch.");
             }
+
+            var userId = GetCurrentUserId();
+            Operation? existingOperation;
+
+            if (IsAdmin())
+            {
+                existingOperation = await _operationRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                existingOperation = await _operationRepository.GetByIdAndUserAsync(id, userId);
+            }
+
+            if (existingOperation == null)
+            {
+                return NotFound($"Operation with id {id} not found or you don't have permission.");
+            }
+
+            // Ensure UserId doesn't change
+            operation.UserId = existingOperation.UserId;
 
             var operationDto = new OperationDto
             {
@@ -80,6 +136,10 @@ namespace WebApiForAz.Controllers
             if (validationResult is not null)
                 return validationResult;
 
+            // Set the UserId from the current user
+            var userId = GetCurrentUserId();
+            operation.UserId = userId;
+
             var operationDto = new OperationDto
             {
                 Date = operation.Date,
@@ -87,40 +147,53 @@ namespace WebApiForAz.Controllers
                 Note = operation.Note,
                 OperationTypeId = operation.OperationTypeId
             };
-            var createdOperation = await _operationService.CreateAsync(operationDto);
+            
+            // Create the operation entity with UserId
+            var operationEntity = new Operation
+            {
+                Date = operation.Date,
+                Amount = operation.Amount,
+                Note = operation.Note,
+                OperationTypeId = operation.OperationTypeId,
+                UserId = userId
+            };
+            
+            var createdOperation = await _operationRepository.AddAsync(operationEntity);
 
             if (createdOperation == null)
             {
                 return BadRequest("Failed to create Operation.");
             }
 
-            var checkNewOperation = await _operationService.GetByIdAsync(createdOperation.OperationId);
+            var checkNewOperation = await _operationRepository.GetByIdAsync(createdOperation.OperationId);
 
             if (checkNewOperation == null)
             {
-                return BadRequest($"Operation with id {createdOperation.OperationTypeId} not found after creation.");
+                return BadRequest($"Operation with id {createdOperation.OperationId} not found after creation.");
             }
 
-            var createdOperationEntity = new Operation
-            {
-                OperationId = createdOperation.OperationId,
-                Date = createdOperation.Date,
-                Amount = createdOperation.Amount,
-                Note = createdOperation.Note,
-                OperationTypeId = createdOperation.OperationTypeId
-            };
-            return CreatedAtAction(nameof(GetOperation), new { id = createdOperationEntity.OperationId }, createdOperationEntity);
+            return CreatedAtAction(nameof(GetOperation), new { id = createdOperation.OperationId }, createdOperation);
         }
 
         // DELETE: api/Operations/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOperation(int id)
         {
-            var operation = await _operationService.GetByIdAsync(id);
+            var userId = GetCurrentUserId();
+            Operation? operation;
+
+            if (IsAdmin())
+            {
+                operation = await _operationRepository.GetByIdAsync(id);
+            }
+            else
+            {
+                operation = await _operationRepository.GetByIdAndUserAsync(id, userId);
+            }
 
             if (operation == null)
             {
-                return NotFound($"Operation with id {id} not found.");
+                return NotFound($"Operation with id {id} not found or you don't have permission.");
             }
 
             var isDeleted = await _operationService.DeleteAsync(id);

@@ -56,6 +56,16 @@ namespace SFMB.DAL.Repositories
             return operationTypes;
         }
 
+        public async Task<IEnumerable<OperationType>> GetAllByUserAsync(string userId)
+        {
+            var operationTypes = await _context.OperationTypes
+                .Include(ot => ot.Operations)
+                .Where(ot => ot.UserId == userId)
+                .ToListAsync();
+            Log.Information($"Retrieving OperationTypes for user {userId}.");
+            return operationTypes;
+        }
+
         public async Task<OperationType?> GetByIdAsync(int id)
         {
             var operationType = await _context.OperationTypes
@@ -69,6 +79,23 @@ namespace SFMB.DAL.Repositories
             else
             {
                 Log.Information($"Retrieved OperationType: {operationType.Name}, IsIncome: {operationType.IsIncome}");
+            }
+            return operationType;
+        }
+
+        public async Task<OperationType?> GetByIdAndUserAsync(int id, string userId)
+        {
+            var operationType = await _context.OperationTypes
+                .Include(ot => ot.Operations)
+                .FirstOrDefaultAsync(ot => ot.OperationTypeId == id && ot.UserId == userId);
+
+            if (operationType == null)
+            {
+                Log.Warning($"OperationType with ID {id} not found for user {userId}.");
+            }
+            else
+            {
+                Log.Information($"Retrieved OperationType: {operationType.Name}, IsIncome: {operationType.IsIncome} for user {userId}");
             }
             return operationType;
         }

@@ -37,5 +37,30 @@ namespace SFMB.DAL.Repositories
             };
             return report;
         }
+
+        public async Task<PeriodReport> GetPeriodReportByUserAsync(DateOnly startDate, DateOnly endDate, string userId)
+        {
+            var start = startDate;
+            var end = endDate.AddDays(1);
+
+            var operations = await _context.Operations
+                .Include(o => o.OperationType)
+                .Where(o => o.Date >= start && o.Date < end && o.UserId == userId)
+                .ToListAsync();
+
+            var report = new PeriodReport
+            {
+                StartDate = startDate,
+                EndDate = endDate,
+                TotalIncome = operations
+                    .Where(o => o.OperationType != null && o.OperationType.IsIncome)
+                    .Sum(o => o.Amount),
+                TotalExpenses = operations
+                    .Where(o => o.OperationType != null && !o.OperationType.IsIncome)
+                    .Sum(o => o.Amount),
+                Operations = operations
+            };
+            return report;
+        }
     }
 }
