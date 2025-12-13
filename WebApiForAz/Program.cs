@@ -125,18 +125,24 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Seed database with roles and default users
+// Apply database migrations and seed data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
+        // Apply pending migrations
+        var context = services.GetRequiredService<SfmbDbContext>();
+        await context.Database.MigrateAsync();
+        Console.WriteLine("Database migrations applied successfully.");
+        
+        // Seed database with roles and default users
         await DbSeeder.SeedRolesAndUsersAsync(services);
     }
     catch (Exception ex)
     {
         // Log error if needed
-        Console.WriteLine($"Error seeding database: {ex.Message}");
+        Console.WriteLine($"Error applying migrations or seeding database: {ex.Message}");
     }
 }
 
