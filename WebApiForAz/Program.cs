@@ -17,6 +17,7 @@ using WebApiForAz.Middleware;
 //                //.AddJsonFile("appsettings.json")
 //                .Build();
 
+
 //var builder = WebApplication.CreateBuilder(args);
 
 var builder = WebApplication.CreateBuilder(args);
