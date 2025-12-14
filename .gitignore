@@ -266,3 +266,6 @@ FakesAssemblies/
 **/logs/
 
 # **/Properties/launchSettings.jsonappsettings.Development.json
+
+appsettings.json
+/scripts/generate-set-jwt-key.sh
