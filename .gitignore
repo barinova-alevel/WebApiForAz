@@ -269,3 +269,5 @@ FakesAssemblies/
 
 appsettings.json
 /scripts/generate-set-jwt-key.sh
+/WebApiForAz/appsettings.Development.json
+/SFMB.DAL/appsettings.json
