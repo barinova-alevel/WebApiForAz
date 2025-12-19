@@ -166,12 +166,19 @@ curl -X GET "https://your-api-url/api/Operations" \
 
 ### Configuration
 
-JWT settings are configured in `appsettings.json`:
+The application requires JWT settings to be configured. These are stored in `appsettings.json` (base configuration file) and can be overridden by environment variables in production.
+
+**Configuration files:**
+- `appsettings.json` - Base configuration file with safe defaults (tracked in git)
+- `appsettings.Development.json` - Development-specific settings (tracked in git)
+- `appsettings.Production.json` - Optional production settings (ignored by git)
+
+JWT settings in `appsettings.json`:
 
 ```json
 {
   "Jwt": {
-    "Key": "REPLACE_WITH_SECURE_RANDOM_KEY_AT_LEAST_32_CHARACTERS",
+    "Key": "REPLACE_WITH_SECURE_RANDOM_KEY_AT_LEAST_32_CHARACTERS_FOR_PRODUCTION",
     "Issuer": "SFMBApi",
     "Audience": "SFMBApi",
     "ExpiryInHours": 24
@@ -180,16 +187,15 @@ JWT settings are configured in `appsettings.json`:
 ```
 
 **Important for Production:**
-- **CRITICAL**: Replace the `Jwt:Key` placeholder with a secure random string before deployment
+- **CRITICAL**: The `Jwt:Key` in `appsettings.json` is a placeholder and MUST be overridden in production
+- Override sensitive values using environment variables (see below) or `appsettings.Production.json`
 - The key must be at least 32 characters long
 - Use a cryptographically secure random generator to create the key
-- Store sensitive configuration in environment variables or Azure Key Vault, not in appsettings.json
-- Set appropriate token expiry times
 - Never commit production keys to version control
 
 ### Environment Variables
 
-For DigitalOcean deployment, set these environment variables:
+For production deployment (e.g., DigitalOcean), set these environment variables to override the defaults in `appsettings.json`:
 
 ```
 DATABASE_URL=your-postgres-connection-string
@@ -198,6 +204,8 @@ Jwt__Issuer=SFMBApi
 Jwt__Audience=SFMBApi
 Jwt__ExpiryInHours=24
 ```
+
+**Note:** Environment variables use double underscores (`__`) to represent nested configuration sections. For example, `Jwt__Key` maps to `Jwt:Key` in the configuration hierarchy.
 
 ### Security Features
 
