@@ -135,11 +135,11 @@ using (var scope = app.Services.CreateScope())
     try
     {
         // Apply pending migrations
-        var context = services.GetRequiredService<SfmbDbContext>();
-        Console.WriteLine("Applying database migrations...");
-        await context.Database.MigrateAsync();
-        Console.WriteLine("Database migrations applied successfully.");
-        
+        //var context = services.GetRequiredService<SfmbDbContext>();
+        //Console.WriteLine("Applying database migrations...");
+        //await context.Database.MigrateAsync();
+        //Console.WriteLine("Database migrations applied successfully.");
+
         // Seed database with roles and default users
         await DbSeeder.SeedRolesAndUsersAsync(services);
     }
