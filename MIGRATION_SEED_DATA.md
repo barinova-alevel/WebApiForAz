@@ -83,6 +83,7 @@ SELECT * FROM "AspNetUsers" WHERE "Email" = 'user1@sfmb.com';
 ## Notes
 
 - The migration creates a user if one doesn't exist, but the `DbSeeder` class in the application also creates default users at runtime
-- If the DbSeeder runs first, this migration will use the existing user
-- The password hash in the migration is a placeholder; the DbSeeder will set the actual password "User123!" when it creates the user
+- **Recommended**: Run the application first to let DbSeeder create users with proper passwords, then run this migration
+- If the migration runs first and creates the user, the password hash is a placeholder and the user won't be able to log in until DbSeeder updates it
+- If DbSeeder runs first (recommended), this migration will use the existing properly-configured user
 - The seed data is assigned to `user1@sfmb.com` to ensure proper ownership in a multi-tenant system

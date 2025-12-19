@@ -27,6 +27,9 @@ namespace SFMB.DAL.Migrations
                     LIMIT 1;
                     
                     -- If user doesn't exist, create one for seed data
+                    -- Note: This creates a user with a placeholder password hash.
+                    -- The DbSeeder will handle proper user creation at application startup.
+                    -- However, we need to ensure seed data has a valid UserId.
                     IF v_user_id IS NULL THEN
                         v_user_id := gen_random_uuid()::text;
                         
