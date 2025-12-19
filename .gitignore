@@ -266,6 +266,7 @@ FakesAssemblies/
 **/logs/
 
 # **/Properties/launchSettings.jsonappsettings.Development.json
-
-appsettings.json
+# appsettings.json should be tracked with safe defaults; use environment variables for production secrets
+# appsettings.Production.json can be used for production secrets and should remain ignored
+appsettings.Production.json
 /scripts/generate-set-jwt-key.sh
