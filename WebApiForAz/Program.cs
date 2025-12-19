@@ -34,7 +34,7 @@ builder.Services.AddDbContext<SfmbDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // Configure Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
@@ -43,8 +43,10 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequiredLength = 6;
     options.User.RequireUniqueEmail = true;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<SfmbDbContext>()
-.AddDefaultTokenProviders();
+.AddDefaultTokenProviders()
+.AddSignInManager();
 
 // Configure JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
