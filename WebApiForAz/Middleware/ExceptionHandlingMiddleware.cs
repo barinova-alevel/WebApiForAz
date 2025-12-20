@@ -16,8 +16,6 @@ namespace WebApiForAz.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            Console.WriteLine("Middleware running");
-
             try
             {
                 await _next(context);
@@ -31,10 +29,10 @@ namespace WebApiForAz.Middleware
             }
             catch (ValidationException ex)
             {
-                // Only log the validation message, not the entire exception which might contain sensitive data
+                // Log validation errors but return a generic message to avoid exposing sensitive information
                 _logger.LogError("Validation error: {Message}", ex.Message);
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+                await context.Response.WriteAsJsonAsync(new { error = "Validation failed. Please check your input and try again." });
             }
             catch (Exception ex)
             {
