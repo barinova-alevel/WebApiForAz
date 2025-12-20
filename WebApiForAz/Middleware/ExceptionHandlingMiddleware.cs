@@ -24,21 +24,24 @@ namespace WebApiForAz.Middleware
             }
             catch (DbUpdateException ex)
             {
-                _logger.LogError(ex, "Database update error");
+                // Log without sensitive data
+                _logger.LogError(ex, "Database update error occurred");
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsJsonAsync(new { error = "Invalid data. A required field may be missing or null." });
             }
             catch (ValidationException ex)
             {
-                _logger.LogError(ex, "Validation error");
+                // Only log the validation message, not the entire exception which might contain sensitive data
+                _logger.LogError("Validation error: {Message}", ex.Message);
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsJsonAsync(new { error = ex.Message });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unhandled exception");
+                // Log the error without exposing sensitive details to the user
+                _logger.LogError(ex, "An unexpected error occurred");
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred." });
+                await context.Response.WriteAsJsonAsync(new { error = "An unexpected error occurred. Please try again later." });
             }
         }
     }
