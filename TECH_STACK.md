@@ -19,7 +19,7 @@ This document describes the technical stack used in the Self-Finance Manager Bac
   - `EFCore.NamingConventions` (9.0.0) - Snake case naming conventions for PostgreSQL
   - `Npgsql.EntityFrameworkCore.PostgreSQL` (9.0.4) - PostgreSQL provider
   - `Microsoft.EntityFrameworkCore.SqlServer` (9.0.8) - SQL Server provider
-  - `Microsoft.EntityFrameworkCore.InMemory` (9.0.11) - In-memory database for testing
+  - `Microsoft.EntityFrameworkCore.InMemory` (9.0.11) - In-memory database for testing (uses latest patch version)
 
 ## Authentication & Authorization
 
@@ -288,8 +288,8 @@ docker run -p 8080:80 webapi-for-az
 
 ## References
 
-- [ASP.NET Core Documentation](https://docs.microsoft.com/aspnet/core)
-- [Entity Framework Core Documentation](https://docs.microsoft.com/ef/core)
+- [ASP.NET Core Documentation](https://learn.microsoft.com/aspnet/core)
+- [Entity Framework Core Documentation](https://learn.microsoft.com/ef/core)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
 - [Swagger/OpenAPI Documentation](https://swagger.io/docs/)
 - [JWT.io](https://jwt.io/)
