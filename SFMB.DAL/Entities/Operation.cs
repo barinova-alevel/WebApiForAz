@@ -1,4 +1,6 @@
-﻿namespace SFMB.DAL.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace SFMB.DAL.Entities
 {
     public class Operation
     {
@@ -7,6 +9,8 @@
         public decimal Amount { get; set; }
         public string? Note { get; set; }
         public int OperationTypeId { get; set; }
+        
+        [JsonIgnore]
         public virtual OperationType? OperationType { get; set; }
         
         // User ownership
