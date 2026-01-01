@@ -18,11 +18,17 @@ using WebApiForAz.Middleware;
 //                .Build();
 
 
-//var builder = WebApplication.CreateBuilder(args);
+Console.Title = $"WebApi - {DateTime.Now:HH:mm}";
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddEnvironmentVariables(); // Load ALL environment variables
 
+builder.Logging.AddSimpleConsole(options =>
+{
+    options.TimestampFormat = "[HH:mm:ss] ";
+    options.UseUtcTimestamp = false;
+});
+
+builder.Configuration.AddEnvironmentVariables();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
