@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using SFMB.BL;
 using SFMB.BL.Dtos;
 using SFMB.BL.Services.Interfaces;
 using SFMB.DAL.Repositories.Interfaces;
@@ -23,6 +22,14 @@ namespace SFMB.BL.Services
             Log.Information($"Generating a daily report for period from {startDate} to {endDate}");
             return reportDto;
         }
-    }
 
+        public async Task<PeriodReportDto> GetPeriodReportByUserAsync(DateOnly startDate, DateOnly endDate, string userId)
+        {
+            var report = await _periodReportRepository.GetPeriodReportByUserAsync(startDate, endDate, userId);
+            var helper = new DtoMapper();
+            var reportDto = helper.PeriodReportToDto(report);
+            Log.Information($"Generating a daily report for period from {startDate} to {endDate}");
+            return reportDto;
+        }
+    }
 }

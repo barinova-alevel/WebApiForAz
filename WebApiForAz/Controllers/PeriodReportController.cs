@@ -45,12 +45,12 @@ namespace WebApiForAz.Controllers
             
             if (IsAdmin())
             {
-                var report = await _periodReportRepository.GetPeriodReportAsync(startDate, endDate);
+                var report = await _periodReportService.GetPeriodReportAsync(startDate, endDate);
                 return Ok(report);
             }
             else
             {
-                var report = await _periodReportRepository.GetPeriodReportByUserAsync(startDate, endDate, userId);
+                var report = await _periodReportService.GetPeriodReportByUserAsync(startDate, endDate, userId);
                 return Ok(report);
             }
         }

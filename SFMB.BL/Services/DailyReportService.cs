@@ -21,5 +21,14 @@ namespace SFMB.BL.Services
             Log.Information($"Generating a daily report for {date}");
             return reportDto;
         }
+
+        public async Task<DailyReportDto> GetDailyReportByUserAsync(DateOnly date, string userId)
+        {
+            var report = await _dailyReportRepository.GetDailyReportByUserAsync(date, userId);
+            var helper = new DtoMapper();
+            var reportDto = helper.DailyReportToDto(report);
+            Log.Information($"Generating a daily report for {date}");
+            return reportDto;
+        }
     }
 }

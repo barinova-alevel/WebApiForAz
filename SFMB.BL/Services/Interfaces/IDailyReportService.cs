@@ -5,5 +5,7 @@ namespace SFMB.BL.Services.Interfaces
     public interface IDailyReportService
     {
         Task<DailyReportDto> GetDailyReportAsync(DateOnly date);
+
+        Task<DailyReportDto> GetDailyReportByUserAsync(DateOnly date, string userId);
     }
 }

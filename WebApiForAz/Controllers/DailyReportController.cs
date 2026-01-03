@@ -14,12 +14,13 @@ namespace WebApiForAz.Controllers
     public class DailyReportController : ControllerBase
     {
         private readonly IDailyReportService _dailyReportService;
-        private readonly IDailyReportRepository _dailyReportRepository;
+        //private readonly IDailyReportRepository _dailyReportRepository;
 
-        public DailyReportController(IDailyReportService dailyReportService, IDailyReportRepository dailyReportRepository)
+       // public DailyReportController(IDailyReportService dailyReportService, IDailyReportRepository dailyReportRepository)
+        public DailyReportController(IDailyReportService dailyReportService)
         {
             _dailyReportService = dailyReportService;
-            _dailyReportRepository = dailyReportRepository;
+           // _dailyReportRepository = dailyReportRepository;
         }
 
         private string GetCurrentUserId()
@@ -39,12 +40,13 @@ namespace WebApiForAz.Controllers
             
             if (IsAdmin())
             {
-                var report = await _dailyReportRepository.GetDailyReportAsync(date);
+                //var report = await _dailyReportRepository.GetDailyReportAsync(date);
+                var report = await _dailyReportService.GetDailyReportAsync(date);
                 return Ok(report);
             }
             else
             {
-                var report = await _dailyReportRepository.GetDailyReportByUserAsync(date, userId);
+                var report = await _dailyReportService.GetDailyReportByUserAsync(date, userId);
                 return Ok(report);
             }
         }

@@ -66,5 +66,4 @@ namespace SFMB.DAL.Repositories
             return report;
         }
     }
-
 }
